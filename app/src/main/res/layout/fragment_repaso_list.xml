@@ -10,4 +10,6 @@
     android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
     tools:context=".RepasoFragment"
+    android:nextFocusLeft="@layout/fragment_repaso"
+    android:nextFocusUp="@layout/fragment_repaso"
     tools:listitem="@layout/fragment_repaso" />
