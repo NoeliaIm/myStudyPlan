@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">MyStudyPlan</string>
+    <string name="asignatura">Asignatura</string>
+    <string name="tema">Tema</string>
+    <string name="cat_lists_title">Lists</string>
+    <string name="cat_lists_description">
+    Lists are continuous, vertical indexes of text or images.
+  </string>
+    <string name="mtrl_list_item_clicked">List item clicked</string>
+    <string name="mtrl_list_item_one_line">One Line Item</string>
+    <string name="mtrl_list_item_two_line">Two Line Item</string>
+    <string name="mtrl_list_item_three_line">Three Line Item</string>
+    <string name="mtrl_list_item_secondary_text">Secondary Text</string>
+    <string name="mtrl_list_item_tertiary_text">Tertiary Text</string>
+    <string name="submit">Añadir</string>
+    <string name="a_adir_asingatura">Añadir Asingatura</string>
+    <string name="planning">Planning</string>
+    <string name="fecha_repaso">fecha repaso</string>
+    <string name="Repasos">Repasos</string>
+    <string name="Exámenes">Exámenes</string>
+    <string name="temas">Temas</string>
+    <string name="Configuracion">Configuración</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="accept">Aceptar</string>
+    <string name="cancel">Cancelar</string>
+</resources>

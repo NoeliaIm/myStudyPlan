@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:card_view="http://schemas.android.com/tools"
+    android:layout_gravity="center"
+    android:gravity="center|top"
+    android:orientation="vertical">
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="9dp"
+        android:padding="6dp"
+        app:cardBackgroundColor="#A2ADF3"
+        card_view:cardCornerRadius="8dp"
+        card_view:cardElevation="8dp">
+
+        <EditText
+            android:id="@+id/asignatura"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/asignatura"
+            android:inputType="text"
+            android:importantForAutofill="no" />
+
+
+        <Button
+            android:id="@+id/btnAniadirAsignatura"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="170dp"
+            android:layout_marginTop="08dp"
+            android:layout_marginEnd="20dp"
+            android:onClick="aniadirAsignatura"
+            android:background="@color/purple_700"
+            android:textColor="@color/white"
+            android:text="@string/a_adir_asingatura" />
+
+        <EditText
+            android:id="@+id/tema"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dp"
+            android:layout_marginBottom="30dp"
+            android:gravity="fill_horizontal|top"
+            android:hint="@string/tema"
+            android:importantForAutofill="no"
+            android:inputType="text" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/planning"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="250dp"
+                android:layout_marginTop="100dp"
+                android:text="@string/planning"
+                android:textColor="#fff"
+                android:textSize="20sp" />
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>
