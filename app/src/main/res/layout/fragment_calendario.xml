@@ -1,12 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
     tools:context=".CalendarioFragment">
 
     <CalendarView
         android:id="@+id/simpleCalendarView"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
-</FrameLayout>
+
+<RelativeLayout
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:id="@+id/imagenCarretera"
+        android:layout_width="wrap_content"
+        android:layout_height="283dp"
+        android:contentDescription="@string/imagen_carretera"
+        android:src="@drawable/winding_road_1556177_640" />
+
+        <TextView
+            android:id="@+id/frasePersonal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:layout_centerInParent="true"
+            android:padding="6dp"
+            android:textColor="@color/white"
+            android:textSize="12pt"
+            android:textStyle="bold" />
+
+</RelativeLayout>
+
+
+</LinearLayout>

@@ -1,15 +1,21 @@
 package com.noeliaiglesias.mystudyplan;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CalendarView;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -74,8 +80,52 @@ public class CalendarioFragment extends Fragment {
     public  void onViewCreated(View v , Bundle savedInstanceState){
         super.onViewCreated(v, savedInstanceState);
         initCalendar(v);
+        TextView frase= v.findViewById(R.id.frasePersonal);
+        String fraseGuardada =escribirFrase(frase);
+        frase.setText(fraseGuardada);
+        ImageView imageView = v.findViewById(R.id.imagenCarretera);
+        final String[] m_Text = {""};
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle("Añade tu frase");
+                final EditText input = new EditText(getContext());
+                input.setInputType(InputType.TYPE_CLASS_TEXT);
+                builder.setView(input);
+                builder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        m_Text[0] = input.getText().toString();
+                        frase.setText(m_Text[0]);
+                        guardarFrase(m_Text[0]);
+                    }
+                });
+                builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                builder.show();
+            }
+        });
+
     }
 
+    private void guardarFrase(String frase){
+        Context context = getActivity();
+        SharedPreferences prefs = context.getSharedPreferences("MisPreferencias", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString("frase", frase);
+        editor.commit();
+    }
+
+    private String escribirFrase(View textViewFrase){
+        SharedPreferences prefs = getActivity().getSharedPreferences("MisPreferencias", Context.MODE_PRIVATE);
+        String frase =prefs.getString("frase", "");
+        return frase;
+    }
     private void initCalendar(View v){
         CalendarView calendarView = v.findViewById(R.id.simpleCalendarView);
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
@@ -95,4 +145,5 @@ public class CalendarioFragment extends Fragment {
             }
         });
     }
+
 }

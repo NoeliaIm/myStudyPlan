@@ -22,4 +22,10 @@
     <string name="Configuracion">Configuración</string>
     <string name="accept">Aceptar</string>
     <string name="cancel">Cancelar</string>
+    <string name="edici_n_de_entradas">Edición de entradas</string>
+    <string name="editar_tema">Editar tema</string>
+    <string name="eliminar_tema">Eliminar tema</string>
+    <string name="eliminar_asignatura">Eliminar asignatura</string>
+    <string name="imagen_carretera">Imagen para escribir una frase</string>
+    <string name="a_ade_tu_frase">Añade tu frase</string>
 </resources>

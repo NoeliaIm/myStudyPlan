@@ -1,15 +1,11 @@
 package com.noeliaiglesias.mystudyplan;
 
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.CalendarView;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -65,6 +61,7 @@ public class MainActivity extends FragmentActivity {
             fm.beginTransaction().add(R.id.fragment_container, frg).commit();
         }
     }
+
 
     public List<Fragment> getVisibleFragment(){
         List<Fragment> fragmentList = fm.getFragments();
