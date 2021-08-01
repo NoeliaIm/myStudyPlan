@@ -15,10 +15,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -77,7 +79,7 @@ public class CalendarioFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_calendario, container, false);
     }
 
-    public  void onViewCreated(View v , Bundle savedInstanceState){
+    public  void onViewCreated(@NonNull View v , Bundle savedInstanceState){
         super.onViewCreated(v, savedInstanceState);
         initCalendar(v);
         TextView frase= v.findViewById(R.id.frasePersonal);
@@ -92,14 +94,17 @@ public class CalendarioFragment extends Fragment {
                 builder.setTitle("Añade tu frase");
                 final EditText input = new EditText(getContext());
                 input.setInputType(InputType.TYPE_CLASS_TEXT);
+                input.setText(recuperarFrase());
                 builder.setView(input);
                 builder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         m_Text[0] = input.getText().toString();
+                        m_Text[0]= m_Text[0].trim();
                         frase.setText(m_Text[0]);
                         guardarFrase(m_Text[0]);
                     }
+
                 });
                 builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
@@ -115,17 +120,26 @@ public class CalendarioFragment extends Fragment {
 
     private void guardarFrase(String frase){
         Context context = getActivity();
+        assert context != null;
         SharedPreferences prefs = context.getSharedPreferences("MisPreferencias", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString("frase", frase);
-        editor.commit();
+        editor.apply();
     }
 
     private String escribirFrase(View textViewFrase){
-        SharedPreferences prefs = getActivity().getSharedPreferences("MisPreferencias", Context.MODE_PRIVATE);
+        SharedPreferences prefs = Objects.requireNonNull(getActivity()).getSharedPreferences("MisPreferencias", Context.MODE_PRIVATE);
         String frase =prefs.getString("frase", "");
         return frase;
     }
+
+    private String recuperarFrase(){
+        SharedPreferences prefs = Objects.requireNonNull(getActivity()).getSharedPreferences("MisPreferencias", Context.MODE_PRIVATE);
+        String frase =prefs.getString("frase", "");
+        return frase;
+    }
+
+
     private void initCalendar(View v){
         CalendarView calendarView = v.findViewById(R.id.simpleCalendarView);
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
@@ -138,7 +152,7 @@ public class CalendarioFragment extends Fragment {
                 if(selectionDate.isAfter(LocalDate.now())){
                     args.putString("selecction_date", selectionDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
                     fechaExamenDialogo.setArguments(args);
-                    fechaExamenDialogo.show(getActivity().getSupportFragmentManager(),"FechaExamenDialogo");
+                    fechaExamenDialogo.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(),"FechaExamenDialogo");
                 }else {
                     Toast.makeText(getContext(),"La fecha del examen no puede ser antes de mañana", Toast.LENGTH_LONG ).show();
                 }

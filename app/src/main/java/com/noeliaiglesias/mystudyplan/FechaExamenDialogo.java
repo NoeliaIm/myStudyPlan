@@ -11,14 +11,15 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class FechaExamenDialogo extends DialogFragment {
     AlertDialog.Builder builder;
@@ -26,9 +27,10 @@ public class FechaExamenDialogo extends DialogFragment {
     private String asignatura;
 
 
+    @NonNull
     public Dialog onCreateDialog(Bundle savedInstanceState){
         Bundle mArgs = getArguments();
-        studyPlanlab = new StudyPlanLab(getContext());
+        studyPlanlab = new StudyPlanLab(Objects.requireNonNull(getContext()));
         SharedPreferences preferences = getContext().getSharedPreferences("MisAsignaturas", Context.MODE_PRIVATE);
         Map<String,?> keys = preferences.getAll();
         ArrayList<String> items=new ArrayList<>();
@@ -37,8 +39,8 @@ public class FechaExamenDialogo extends DialogFragment {
                 items.add(entry.getValue().toString());
             }
         }
-        String[] array = items.toArray(new String[items.size()]);
-        builder = new AlertDialog.Builder(getActivity());
+
+        builder = new AlertDialog.Builder(Objects.requireNonNull(getActivity()));
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.dialogo_fecha_examen, null);
         Spinner spinner = view.findViewById(R.id.asignatura_examen);
@@ -49,12 +51,8 @@ public class FechaExamenDialogo extends DialogFragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 ArrayList<Study> itemsMult = new ArrayList<>();
                 asignatura= parent.getItemAtPosition(position).toString();
-                if(asignatura!= null){
-                    itemsMult.addAll(studyPlanlab.getStudiesByAsignatura(asignatura));
-                    selectionSpinner.setItems(itemsMult);
-                }else{
-                    selectionSpinner.setItems(new ArrayList<>());
-                }
+                itemsMult.addAll(studyPlanlab.getStudiesByAsignatura(asignatura));
+                selectionSpinner.setItems(itemsMult);
             }
 
             @Override
@@ -74,6 +72,7 @@ public class FechaExamenDialogo extends DialogFragment {
                 ArrayList<Study> studiesModificadas =  selectionSpinner.getSelectedItems();
                 for (Study study:
                     studiesModificadas ) {
+                    assert mArgs != null;
                     study.setFechaFin(LocalDate.parse(mArgs.getString("selecction_date"), DateTimeFormatter.ofPattern("dd-MM-yyyy")));
                     study.setProxExam(LocalDate.parse(mArgs.getString("selecction_date"), DateTimeFormatter.ofPattern("dd-MM-yyyy")));
                     studyPlanlab.updateStudy(study);

@@ -1,12 +1,21 @@
 package com.noeliaiglesias.mystudyplan;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+
+import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -60,5 +69,57 @@ public class ConfigFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_config, container, false);
+    }
+
+    public  void onViewCreated(@NonNull View v , Bundle savedInstanceState) {
+        super.onViewCreated(v, savedInstanceState);
+        EditText mAsignaturaField = (EditText) v.findViewById(R.id.asignatura);
+        mAsignaturaField.setOnClickListener(this::mostrarDialogo);
+        TextView editarTema = v.findViewById(R.id.editarTema);
+        editarTema.setOnClickListener(v1 -> {
+            EditarTemaDialogo editarTemaDialogo = new EditarTemaDialogo();
+            editarTemaDialogo.show(requireActivity().getSupportFragmentManager(), "EditarTemaDialogo");
+        });
+        TextView eliminarTema= v.findViewById(R.id.eliminarTema);
+        eliminarTema.setOnClickListener(v12 -> {
+            EliminarTemaDialogo eliminarTemaDialogo = new EliminarTemaDialogo();
+            eliminarTemaDialogo.show(requireActivity().getSupportFragmentManager(), "EliminarTemaDialogo");
+        });
+
+        TextView eliminarAsignatura = v.findViewById(R.id.eliminarAsignatura);
+        eliminarAsignatura.setOnClickListener(v13 -> {
+            EliminarAsignaturaDialogo eliminarAsignaturaDialogo = new EliminarAsignaturaDialogo();
+            eliminarAsignaturaDialogo.show(requireActivity().getSupportFragmentManager(), "EliminarAsignaturaDialogo");
+        });
+
+    }
+
+    private void asignaturaDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        SharedPreferences preferences = requireContext().getSharedPreferences("MisAsignaturas", Context.MODE_PRIVATE);
+        Map<String,?> keys = preferences.getAll();
+        ArrayList<String> items=new ArrayList<>();
+        for(Map.Entry<String,?> entry : keys.entrySet()){
+            if(!entry.getKey().equals("numAsig")){
+                items.add(entry.getValue().toString());
+            }
+        }
+        String[] array = items.toArray(new String[0]);
+        builder.setItems(array, (dialog, which) -> {
+
+        });
+
+        AlertDialog dialog =builder.create();
+        dialog.show();
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+
+        lp.copyFrom(dialog.getWindow().getAttributes());
+        lp.width = 650;
+        lp.x=-50;
+        lp.y=-20;
+        dialog.getWindow().setAttributes(lp);
+    }
+    public void mostrarDialogo(View v){
+        asignaturaDialog();
     }
 }

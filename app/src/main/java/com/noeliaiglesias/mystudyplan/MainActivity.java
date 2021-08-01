@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -16,6 +17,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 public class MainActivity extends FragmentActivity {
@@ -49,11 +51,23 @@ public class MainActivity extends FragmentActivity {
         int numAsignatura = prefs.getInt("numAsig", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = prefs.edit();
         EditText editText = findViewById(R.id.asignatura);
-        editor.putString("asignatura"+numAsignatura, editText.getText().toString());
-        numAsignatura++;
-        editor.putInt("numAsig", numAsignatura);
-        editor.commit();
+        Map<String,?> keys = prefs.getAll();
+        ArrayList<String> items=new ArrayList<>();
+        for(Map.Entry<String,?> entry : keys.entrySet()){
+            if(!entry.getKey().equals("numAsig")){
+                items.add(entry.getValue().toString());
+            }
+        }
+       if(!items.contains(editText.getText().toString())){
+           editor.putString("asignatura"+numAsignatura, editText.getText().toString());
+           numAsignatura++;
+           editor.putInt("numAsig", numAsignatura);
+           editor.apply();
+       }else{
+           Toast.makeText(this, "La asignatura ya está añadida", Toast.LENGTH_LONG).show();
+       }
         editText.setText("");
+
     }
     private void showFragment(Fragment frg) {
         if( frg == null){
@@ -66,11 +80,9 @@ public class MainActivity extends FragmentActivity {
     public List<Fragment> getVisibleFragment(){
         List<Fragment> fragmentList = fm.getFragments();
         List<Fragment> fragmentsVisible= new ArrayList<>();
-        if(fragmentList!=null){
-            for(Fragment fragment: fragmentList){
-                if(fragment!=null && fragment.isVisible()){
-                    fragmentsVisible.add(fragment);
-                }
+        for(Fragment fragment: fragmentList){
+            if(fragment!=null && fragment.isVisible()){
+                fragmentsVisible.add(fragment);
             }
         }
         return fragmentsVisible;

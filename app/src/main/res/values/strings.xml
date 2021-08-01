@@ -28,4 +28,7 @@
     <string name="eliminar_asignatura">Eliminar asignatura</string>
     <string name="imagen_carretera">Imagen para escribir una frase</string>
     <string name="a_ade_tu_frase">Añade tu frase</string>
+    <string name="escribe_el_tema">Escribe el tema</string>
+    <string name="esta_acci_n_es_irreversible">Esta acción es irreversible</string>
+    <string name="eliminar">Eliminar</string>
 </resources>

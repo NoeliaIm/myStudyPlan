@@ -1,8 +1,6 @@
 package com.noeliaiglesias.mystudyplan;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
@@ -10,8 +8,11 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -29,7 +30,7 @@ import java.util.Map;
 public class StudyFragment extends Fragment {
 
     private Study mStudy;
-    private EditText mAsignaturaField;
+    private String asignatura;
     private EditText mTemaField;
     private StudyPlanLab studyPlanlab;
     private TextView planning;
@@ -38,7 +39,7 @@ public class StudyFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mStudy = new Study();
-        studyPlanlab = new StudyPlanLab(getContext());
+        studyPlanlab = new StudyPlanLab(requireContext());
 
     }
 
@@ -46,24 +47,22 @@ public class StudyFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_study, container, false);
-        mAsignaturaField = (EditText) v.findViewById(R.id.asignatura);
-        mAsignaturaField.setOnClickListener(this::mostrarDialogo);
-        mAsignaturaField.addTextChangedListener(new TextWatcher() {
+        Spinner spinner = v.findViewById(R.id.asignaturaSpinner);
+        ArrayAdapter<String> adaptador = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, asignaturas());
+        adaptador.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+        spinner.setAdapter(adaptador);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                asignatura= parent.getItemAtPosition(position).toString();
             }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mStudy.setAsignatura(s.toString());
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
+            public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
+
         mTemaField = (EditText) v.findViewById(R.id.tema);
         mTemaField.addTextChangedListener(new TextWatcher() {
             @Override
@@ -82,19 +81,18 @@ public class StudyFragment extends Fragment {
             }
         });
        planning = v.findViewById(R.id.planning);
-       planning.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addStudy(v);
-            }
-        });
+       planning.setOnClickListener(v1 -> {
+           if(!mTemaField.getEditableText().toString().isEmpty()) {
+               addStudy(v1);
+           }
+
+       });
         return v;
     }
 
 
-    private void asignaturaDialog(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        SharedPreferences preferences = getContext().getSharedPreferences("MisAsignaturas", Context.MODE_PRIVATE);
+    private ArrayList<String> asignaturas(){
+        SharedPreferences preferences = requireContext().getSharedPreferences("MisAsignaturas", Context.MODE_PRIVATE);
         Map<String,?> keys = preferences.getAll();
         ArrayList<String> items=new ArrayList<>();
         for(Map.Entry<String,?> entry : keys.entrySet()){
@@ -102,31 +100,19 @@ public class StudyFragment extends Fragment {
                items.add(entry.getValue().toString());
            }
         }
-        String[] array = items.toArray(new String[items.size()]);
-        builder.setItems(array, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                mAsignaturaField.setText(array[which]);
-            }
-        });
 
-       AlertDialog dialog =builder.create();
-       dialog.show();
-    }
-    public void mostrarDialogo(View v){
-        asignaturaDialog();
+        return  items;
     }
 
 
     public void addStudy(View v){
         Study s = new Study();
-        s.setAsignatura(mAsignaturaField.getEditableText().toString());
+        s.setAsignatura(asignatura);
         s.setTema(mTemaField.getEditableText().toString());
         s.setFechaInicio(LocalDate.now());
         s.setFechaFin(s.getFechaInicio().plusMonths(4));
         s.setProxExam(s.getFechaInicio().plusMonths(10));
         studyPlanlab.addStudy(s);
-        mAsignaturaField.setText("");
         mTemaField.setText("");
     }
     private static class ListStudyHolder extends RecyclerView.ViewHolder {
