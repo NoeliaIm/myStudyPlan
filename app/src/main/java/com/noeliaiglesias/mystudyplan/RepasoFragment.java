@@ -13,9 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.noeliaiglesias.mystudyplan.placeholder.Repaso;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * A fragment representing a list of Items.
@@ -52,7 +52,7 @@ public class RepasoFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         repaso = new Repaso();
-        studyPlanlab = new StudyPlanLab(getContext());
+        studyPlanlab = new StudyPlanLab(requireContext());
 
 
         if (getArguments() != null) {

@@ -5,7 +5,7 @@ import java.util.UUID;
 
 public class Study {
 
-    private UUID id;
+    private final UUID id;
     private String asignatura;
     private String tema;
     private LocalDate fechaInicio;

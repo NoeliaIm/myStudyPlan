@@ -21,7 +21,7 @@ import java.util.UUID;
 public class StudyPlanLab {
     private static StudyPlanLab sStudyPlanLab; //se utiliza la convención Android s para indicar que es una variable estática
     private final SQLiteDatabase mDatabase;
-//TODO formato de fechas para el layout
+
     public static StudyPlanLab get(Context context) {
         if (sStudyPlanLab == null) {
             sStudyPlanLab = new StudyPlanLab(context);
@@ -47,15 +47,53 @@ public class StudyPlanLab {
         mDatabase.update(MyStudyPlanTable.NAME_STUDY, values, MyStudyPlanTable.Cols.UUID + " = ?", new String[]{uuidString});
     }
 
-    public List<Study> getStudies() {
-        ArrayList<Study> studies = new ArrayList<>();
-        String whereClause = "fecha_fin >?";
-        String [] whereArgs = {LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))};
+    public void deleteStudy(Study s){
+        String table= MyStudyPlanTable.NAME_STUDY;
+        String whereClause = MyStudyPlanTable.Cols.UUID+"=?";
+        String [] whereArgs= {s.getId().toString()};
+        int idStudy= getIdStudy(s);
+        mDatabase.delete(table, whereClause, whereArgs);
+        deleteRepasos(idStudy);
+    }
+
+    public void deleteStudiesByAsignatura(String asignatura){
+        String table = MyStudyPlanTable.NAME_STUDY;
+        String whereClause = MyStudyPlanTable.Cols.ASIGNATURA +"=?";
+        String [] whereArgs =  {asignatura};
+        ArrayList<Integer> idStudies =getIdStudiesByAsignatura(asignatura);
+        mDatabase.delete(table, whereClause,whereArgs);
+        if(!idStudies.isEmpty()){
+            deleteRepasosByAsignatura(idStudies);
+        }
+    }
+
+    public Study getStudyByAsignaturaAndTema(String asignatura, String tema){
+        Study study = new Study();
+        String whereClause = "asignatura=? and tema=?";
+        String [] whereArgs ={asignatura, tema};
         StudyCursorWrapper cursorWrapper = queryStudies(whereClause, whereArgs);
         try {
             cursorWrapper.moveToFirst();
             while (!cursorWrapper.isAfterLast()) {
-                studies.add(cursorWrapper.getStudy());
+                study = cursorWrapper.getStudy();
+                cursorWrapper.moveToNext();
+            }
+        } finally {
+            cursorWrapper.close();
+        }
+
+        return  study;
+    }
+
+    public List<Study> getStudies() {
+        ArrayList<Study> studies = new ArrayList<>();
+        StudyCursorWrapper cursorWrapper = queryStudies(null, null);
+        try {
+            cursorWrapper.moveToFirst();
+            while (!cursorWrapper.isAfterLast()) {
+                if(cursorWrapper.getStudy().getFechaFin().isAfter(LocalDate.now())) {
+                    studies.add(cursorWrapper.getStudy());
+                }
                 cursorWrapper.moveToNext();
             }
         } finally {
@@ -72,7 +110,9 @@ public class StudyPlanLab {
         try {
             cursorWrapper.moveToFirst();
             while (!cursorWrapper.isAfterLast()) {
-                studies.add(cursorWrapper.getStudy());
+                if(cursorWrapper.getStudy().getFechaFin().isAfter(LocalDate.now())) {
+                    studies.add(cursorWrapper.getStudy());
+                }
                 cursorWrapper.moveToNext();
             }
         } finally {
@@ -108,6 +148,7 @@ public class StudyPlanLab {
                 repasos.put(cursor.getColumnName(i),LocalDate.parse(cursor.getString(i), DateTimeFormatter.ofPattern("dd-MM-yyyy")));
             }
         }
+        cursor.close();
         return  repasos;
     }
 
@@ -187,6 +228,30 @@ public class StudyPlanLab {
         }
     }
 
+    private void deleteRepasos(int idStudy){
+        String table =MyStudyPlanTable.NAME_REPASOS;
+        String whereClause = MyStudyPlanTable.Cols.ID_STUDY +" = ";
+        String sql = String.format("delete from %s where %s %d", table, whereClause, idStudy);
+        mDatabase.execSQL(sql);
+    }
+
+    private void deleteRepasosByAsignatura(ArrayList<Integer> idStudies){
+        String table = MyStudyPlanTable.NAME_REPASOS;
+        String whereClause = MyStudyPlanTable.Cols.ID_STUDY + " in (";
+        StringBuilder sql = new StringBuilder();
+        sql.append("delete from ");
+        sql.append(table+ " ");
+        sql.append("where "+whereClause);
+        for (Integer id:
+             idStudies) {
+            sql.append(id + ",");
+        }
+        int count = sql.length();
+        sql.replace(count-1, count, ")" );
+        String sqlString = sql.toString();
+        mDatabase.execSQL(sqlString);
+    }
+
     private void updateRepaso(int idStudy,String columnName, LocalDate fechaNueva){
         String sql = "update repasos set "+ columnName+ " = '" +fechaNueva.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))+ "' where id_study =" +idStudy;
         mDatabase.execSQL(sql);
@@ -225,6 +290,21 @@ public class StudyPlanLab {
         }
         cursor.close();
         return id;
+    }
+
+    private ArrayList<Integer> getIdStudiesByAsignatura(String asignatura){
+        ArrayList<Integer> id_studies= new ArrayList<>();
+        String [] columnas = {"_id"};
+        String whereClause= "asignatura = ?";
+        String [] whereArgs= {asignatura};
+        Cursor cursor = mDatabase.query(MyStudyPlanTable.NAME_STUDY, columnas, whereClause, whereArgs, null, null, null );
+        cursor.moveToFirst();
+        while(!cursor.isAfterLast()){
+            id_studies.add(cursor.getInt(0));
+            cursor.moveToNext();
+        }
+        cursor.close();
+        return id_studies;
     }
 
 }

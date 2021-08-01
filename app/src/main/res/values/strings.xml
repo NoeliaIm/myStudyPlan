@@ -13,15 +13,22 @@
     <string name="mtrl_list_item_secondary_text">Secondary Text</string>
     <string name="mtrl_list_item_tertiary_text">Tertiary Text</string>
     <string name="submit">Añadir</string>
-    <string name="a_adir_asingatura">Añadir Asingatura</string>
+    <string name="a_adir_asingatura">Añadir Asignatura</string>
     <string name="planning">Planning</string>
     <string name="fecha_repaso">fecha repaso</string>
     <string name="Repasos">Repasos</string>
     <string name="Exámenes">Exámenes</string>
     <string name="temas">Temas</string>
     <string name="Configuracion">Configuración</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="accept">Aceptar</string>
     <string name="cancel">Cancelar</string>
+    <string name="edici_n_de_entradas">Edición de entradas</string>
+    <string name="editar_tema">Editar tema</string>
+    <string name="eliminar_tema">Eliminar tema</string>
+    <string name="eliminar_asignatura">Eliminar asignatura</string>
+    <string name="imagen_carretera">Imagen para escribir una frase</string>
+    <string name="a_ade_tu_frase">Añade tu frase</string>
+    <string name="escribe_el_tema">Escribe el tema</string>
+    <string name="esta_acci_n_es_irreversible">Esta acción es irreversible</string>
+    <string name="eliminar">Eliminar</string>
 </resources>

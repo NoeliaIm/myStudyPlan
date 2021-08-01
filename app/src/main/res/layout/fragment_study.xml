@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:card_view="http://schemas.android.com/tools"
@@ -19,26 +21,16 @@
         card_view:cardCornerRadius="8dp"
         card_view:cardElevation="8dp">
 
-        <EditText
-            android:id="@+id/asignatura"
+        <Spinner
+            android:id="@+id/asignaturaSpinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="@string/asignatura"
+            android:spinnerMode="dropdown"
+            android:importantForAutofill="no"
             android:inputType="text"
-            android:importantForAutofill="no" />
+            android:minHeight="48dp"
+            android:minWidth="190dp"/>
 
-
-        <Button
-            android:id="@+id/btnAniadirAsignatura"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="170dp"
-            android:layout_marginTop="08dp"
-            android:layout_marginEnd="20dp"
-            android:onClick="aniadirAsignatura"
-            android:background="@color/purple_700"
-            android:textColor="@color/white"
-            android:text="@string/a_adir_asingatura" />
 
         <EditText
             android:id="@+id/tema"
@@ -49,7 +41,8 @@
             android:gravity="fill_horizontal|top"
             android:hint="@string/tema"
             android:importantForAutofill="no"
-            android:inputType="text" />
+            android:inputType="text"
+            android:minHeight="48dp" />
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">

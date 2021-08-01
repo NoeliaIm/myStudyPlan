@@ -1,5 +1,6 @@
 package com.noeliaiglesias.mystudyplan;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -25,8 +26,9 @@ public class MyRepasoRecyclerViewAdapter extends RecyclerView.Adapter<MyRepasoRe
         mValues = items;
     }
 
+    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         return new ViewHolder(FragmentRepasoBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
 
@@ -61,6 +63,7 @@ public class MyRepasoRecyclerViewAdapter extends RecyclerView.Adapter<MyRepasoRe
             mFechaView = binding.itemRepasoFechaSig;
         }
 
+        @NonNull
         @Override
         public String toString() {
             return super.toString() + " '" + mAsignaturaView.getText() + "'";

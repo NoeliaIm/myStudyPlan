@@ -3,10 +3,8 @@ package com.noeliaiglesias.mystudyplan;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -19,6 +17,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 public class MainActivity extends FragmentActivity {
@@ -52,33 +51,51 @@ public class MainActivity extends FragmentActivity {
         int numAsignatura = prefs.getInt("numAsig", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = prefs.edit();
         EditText editText = findViewById(R.id.asignatura);
-        editor.putString("asignatura"+numAsignatura, editText.getText().toString());
-        numAsignatura++;
-        editor.putInt("numAsig", numAsignatura);
-        editor.commit();
+        Map<String,?> keys = prefs.getAll();
+        ArrayList<String> items=new ArrayList<>();
+        for(Map.Entry<String,?> entry : keys.entrySet()){
+            if(!entry.getKey().equals("numAsig")){
+                items.add(entry.getValue().toString());
+            }
+        }
+       if(!items.contains(editText.getText().toString())){
+           editor.putString("asignatura"+numAsignatura, editText.getText().toString());
+           numAsignatura++;
+           editor.putInt("numAsig", numAsignatura);
+           editor.apply();
+       }else{
+           Toast.makeText(this, "La asignatura ya está añadida", Toast.LENGTH_LONG).show();
+       }
         editText.setText("");
-    }
-    private void showFragment(Fragment frg) {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.container, frg)
-                .commit();
 
     }
+    private void showFragment(Fragment frg) {
+        if( frg == null){
+            frg = new StudyFragment();
+            fm.beginTransaction().add(R.id.fragment_container, frg).commit();
+        }
+    }
+
 
     public List<Fragment> getVisibleFragment(){
         List<Fragment> fragmentList = fm.getFragments();
         List<Fragment> fragmentsVisible= new ArrayList<>();
-        if(fragmentList!=null){
-            for(Fragment fragment: fragmentList){
-                if(fragment!=null && fragment.isVisible()){
-                    fragmentsVisible.add(fragment);
-                }
+        for(Fragment fragment: fragmentList){
+            if(fragment!=null && fragment.isVisible()){
+                fragmentsVisible.add(fragment);
             }
         }
         return fragmentsVisible;
     }
 
+    private void hideFragment(Fragment frg){
+        if(frg != null) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .remove(frg)
+                    .commit();
+        }
+    }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -86,17 +103,25 @@ public class MainActivity extends FragmentActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             Fragment f = null;
+            Fragment fragment = fm.findFragmentById(R.id.fragment_container);
 
             switch (item.getItemId()) {
                 case R.id.navigation_temas:
+                    showFragment(fragment);
                     f = new StudyFragment.StudyList();
                     break;
 
                 case R.id.navigation_repasos:
+                    showFragment(fragment);
                     f = new RepasoFragment();
                     break;
                 case R.id.navigation_examenes:
+                    hideFragment(fragment);
                     f = new CalendarioFragment();
+                    break;
+                case R.id.navigation_config:
+                    hideFragment(fragment);
+                    f= new ConfigFragment();
                     break;
             }
 
@@ -104,8 +129,8 @@ public class MainActivity extends FragmentActivity {
                 getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.fragment_container_recycler,f)
+                        .setPrimaryNavigationFragment(f)
                         .commit();
-
                 return true;
             }
 
