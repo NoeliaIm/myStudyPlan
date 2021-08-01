@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -117,13 +118,16 @@ public class StudyFragment extends Fragment {
     }
     private static class ListStudyHolder extends RecyclerView.ViewHolder {
         LinearLayout llStudyContainer;
-        TextView tvItemAsignatura, tvItemTema, tvItemFechaInicio;
+        TextView tvItemAsignatura, tvItemTema, tvItemFechaInicio, fechaExamenText;
+        ImageView fechaExamenIcon;
         public ListStudyHolder(@NonNull View itemView) {
             super(itemView);
             llStudyContainer = itemView.findViewById(R.id.llStudyContainer);
             tvItemAsignatura = itemView.findViewById(R.id.tvItemAsignatura);
             tvItemTema = itemView.findViewById(R.id.tvItemTema);
             tvItemFechaInicio = itemView.findViewById(R.id.tvItemFechaInicio);
+            fechaExamenText = itemView.findViewById(R.id.fechaExamenText);
+            fechaExamenIcon = itemView.findViewById(R.id.fechaExamenIcon);
         }
     }
 
@@ -175,6 +179,15 @@ public class StudyFragment extends Fragment {
                holder.tvItemAsignatura.setText(mStudies.get(position).getAsignatura());
                holder.tvItemTema.setText(mStudies.get(position).getTema());
                holder.tvItemFechaInicio.setText(mStudies.get(position).getFechaInicio().format(DateTimeFormatter.ofPattern("EEE , dd-MM-yyyy")));
+               holder.fechaExamenText.setText(mStudies.get(position).getProxExam().format(DateTimeFormatter.ofPattern("EEE , dd-MM-yyyy")));
+               holder.fechaExamenIcon.setImageResource(R.drawable.ic_baseline_calendar_today_24);
+                if(!mStudies.get(position).getProxExam().equals(mStudies.get(position).getFechaInicio().plusMonths(10))){
+                    holder.fechaExamenIcon.setVisibility(View.VISIBLE);
+                    holder.fechaExamenText.setVisibility(View.VISIBLE);
+                }else{
+                    holder.fechaExamenIcon.setVisibility(View.INVISIBLE);
+                    holder.fechaExamenText.setVisibility(View.INVISIBLE);
+                }
             }
 
             @Override

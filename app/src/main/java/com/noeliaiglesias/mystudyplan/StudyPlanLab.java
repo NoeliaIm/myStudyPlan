@@ -14,9 +14,12 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class StudyPlanLab {
     private static StudyPlanLab sStudyPlanLab; //se utiliza la convención Android s para indicar que es una variable estática
@@ -220,11 +223,26 @@ public class StudyPlanLab {
 
     public void updateRepasos(Study s){
       Map<String, LocalDate> repasos = getRepasosAndColumns(s);
+      Map<String, LocalDate> sorted = repasos.entrySet().stream().sorted(Map.Entry.comparingByValue())
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (older, newer)-> older, LinkedHashMap::new));
+      LocalDate fechaAnterior = LocalDate.now();
+      LocalDate fechaRepaso;
         for (Map.Entry <String,LocalDate> repaso:
-             repasos.entrySet()) {
-            if(repaso.getValue().isAfter(s.getFechaFin()) || repaso.getValue().isEqual(s.getFechaFin())){
-                updateRepaso(getIdStudy(s), repaso.getKey(), s.getFechaFin().minusDays(1));
+             sorted.entrySet()) {
+
+            if(repaso.getKey().equals("r3")){
+                fechaAnterior= repaso.getValue();
             }
+            if(!repaso.getKey().equals("r1") && !repaso.getKey().equals("r2") && !repaso.getKey().equals("r3")){
+                fechaRepaso= sigFecha(fechaAnterior);
+                fechaAnterior= fechaRepaso;
+                if(fechaRepaso.isAfter(s.getFechaFin()) || fechaRepaso.isEqual(s.getFechaFin())){
+                    updateRepaso(getIdStudy(s), repaso.getKey(), s.getFechaFin().minusDays(1));
+                }else {
+                    updateRepaso(getIdStudy(s), repaso.getKey(), fechaRepaso);
+                }
+            }
+
         }
     }
 
