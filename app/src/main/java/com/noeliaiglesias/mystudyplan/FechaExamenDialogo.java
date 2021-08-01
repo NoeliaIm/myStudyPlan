@@ -2,7 +2,6 @@ package com.noeliaiglesias.mystudyplan;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,7 +18,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.Objects;
 
 public class FechaExamenDialogo extends DialogFragment {
     AlertDialog.Builder builder;
@@ -30,8 +28,8 @@ public class FechaExamenDialogo extends DialogFragment {
     @NonNull
     public Dialog onCreateDialog(Bundle savedInstanceState){
         Bundle mArgs = getArguments();
-        studyPlanlab = new StudyPlanLab(Objects.requireNonNull(getContext()));
-        SharedPreferences preferences = getContext().getSharedPreferences("MisAsignaturas", Context.MODE_PRIVATE);
+        studyPlanlab = new StudyPlanLab(requireContext());
+        SharedPreferences preferences = requireContext().getSharedPreferences("MisAsignaturas", Context.MODE_PRIVATE);
         Map<String,?> keys = preferences.getAll();
         ArrayList<String> items=new ArrayList<>();
         for(Map.Entry<String,?> entry : keys.entrySet()){
@@ -40,8 +38,8 @@ public class FechaExamenDialogo extends DialogFragment {
             }
         }
 
-        builder = new AlertDialog.Builder(Objects.requireNonNull(getActivity()));
-        LayoutInflater inflater = getActivity().getLayoutInflater();
+        builder = new AlertDialog.Builder(requireActivity());
+        LayoutInflater inflater = requireActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.dialogo_fecha_examen, null);
         Spinner spinner = view.findViewById(R.id.asignatura_examen);
         MultiSelectionSpinner selectionSpinner = view.findViewById(R.id.spn_items);
@@ -49,9 +47,8 @@ public class FechaExamenDialogo extends DialogFragment {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                ArrayList<Study> itemsMult = new ArrayList<>();
                 asignatura= parent.getItemAtPosition(position).toString();
-                itemsMult.addAll(studyPlanlab.getStudiesByAsignatura(asignatura));
+                ArrayList<Study> itemsMult = new ArrayList<>(studyPlanlab.getStudiesByAsignatura(asignatura));
                 selectionSpinner.setItems(itemsMult);
             }
 
@@ -61,30 +58,24 @@ public class FechaExamenDialogo extends DialogFragment {
             }
         });
 
-        ArrayAdapter<String> adaptador = new ArrayAdapter<String >(getActivity(), android.R.layout.simple_spinner_item, items);
+        ArrayAdapter<String> adaptador = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, items);
         adaptador.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         spinner.setAdapter(adaptador);
         builder.setView(view);
         builder.setTitle("Fecha de examen");
-        builder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                ArrayList<Study> studiesModificadas =  selectionSpinner.getSelectedItems();
-                for (Study study:
-                    studiesModificadas ) {
-                    assert mArgs != null;
-                    study.setFechaFin(LocalDate.parse(mArgs.getString("selecction_date"), DateTimeFormatter.ofPattern("dd-MM-yyyy")));
-                    study.setProxExam(LocalDate.parse(mArgs.getString("selecction_date"), DateTimeFormatter.ofPattern("dd-MM-yyyy")));
-                    studyPlanlab.updateStudy(study);
-                    studyPlanlab.updateRepasos(study);
-                }
+        builder.setPositiveButton(R.string.accept, (dialog, which) -> {
+            ArrayList<Study> studiesModificadas =  selectionSpinner.getSelectedItems();
+            for (Study study:
+                studiesModificadas ) {
+                assert mArgs != null;
+                study.setFechaFin(LocalDate.parse(mArgs.getString("selecction_date"), DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+                study.setProxExam(LocalDate.parse(mArgs.getString("selecction_date"), DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+                studyPlanlab.updateStudy(study);
+                studyPlanlab.updateRepasos(study);
             }
         });
-        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
+        builder.setNegativeButton(R.string.cancel, (dialog, which) -> {
 
-            }
         });
 
         return builder.create();

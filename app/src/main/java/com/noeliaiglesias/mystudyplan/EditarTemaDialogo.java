@@ -2,7 +2,6 @@ package com.noeliaiglesias.mystudyplan;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -18,7 +17,6 @@ import androidx.fragment.app.DialogFragment;
 
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.Objects;
 
 
 public class EditarTemaDialogo extends DialogFragment {
@@ -29,7 +27,7 @@ public class EditarTemaDialogo extends DialogFragment {
     @NonNull
     public Dialog onCreateDialog(Bundle savedInstanceState){
         builder = new AlertDialog.Builder(requireActivity());
-        LayoutInflater inflater = getActivity().getLayoutInflater();
+        LayoutInflater inflater = requireActivity().getLayoutInflater();
         View view =inflater.inflate(R.layout.dialogo_editar_tema, null);
         studyPlanlab = new StudyPlanLab(requireContext());
         Spinner spinnerAsignatura = view.findViewById(R.id.asignaturParaBuscar);
@@ -66,26 +64,20 @@ public class EditarTemaDialogo extends DialogFragment {
 
             }
         });
-        builder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String asignaturaElegida = (String) spinnerAsignatura.getSelectedItem();
-                String temaElegido= (String) spinnerTema.getSelectedItem();
-                String nuevoTema= String.valueOf(editTextNuevoTema.getEditableText());
-                if(asignaturaElegida!= null && temaElegido!= null && !nuevoTema.isEmpty()){
-                    Study study = studyPlanlab.getStudyByAsignaturaAndTema(asignaturaElegida, temaElegido);
-                    study.setTema(nuevoTema);
-                    studyPlanlab.updateStudy(study);
-                }
-
+        builder.setPositiveButton(R.string.accept, (dialog, which) -> {
+            String asignaturaElegida = (String) spinnerAsignatura.getSelectedItem();
+            String temaElegido= (String) spinnerTema.getSelectedItem();
+            String nuevoTema= String.valueOf(editTextNuevoTema.getEditableText());
+            if(asignaturaElegida!= null && temaElegido!= null && !nuevoTema.isEmpty()){
+                Study study = studyPlanlab.getStudyByAsignaturaAndTema(asignaturaElegida, temaElegido);
+                study.setTema(nuevoTema);
+                studyPlanlab.updateStudy(study);
             }
+
         });
 
-        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
+        builder.setNegativeButton(R.string.cancel, (dialog, which) -> {
 
-            }
         });
 
         builder.setTitle("Edita el tema");
