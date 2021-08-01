@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/listStudy"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -30,8 +31,23 @@
             android:layout_height="wrap_content"
             android:textSize="12sp"
             android:text="@string/fecha_repaso"/>
-
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/fechaExamenIcon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|end"
+        android:contentDescription="@string/icono_que_indica_que_existe_fecha_de_examen"
+        app:srcCompat="@drawable/ic_baseline_calendar_today_24" />
+
+    <TextView
+        android:id="@+id/fechaExamenText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|end"
+        android:layout_marginEnd="6dp"
+        android:text="" />
 
 </androidx.cardview.widget.CardView>
 

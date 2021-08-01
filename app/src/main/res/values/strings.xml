@@ -31,4 +31,5 @@
     <string name="escribe_el_tema">Escribe el tema</string>
     <string name="esta_acci_n_es_irreversible">Esta acción es irreversible</string>
     <string name="eliminar">Eliminar</string>
+    <string name="icono_que_indica_que_existe_fecha_de_examen">icono que indica que existe fecha de examen</string>
 </resources>
