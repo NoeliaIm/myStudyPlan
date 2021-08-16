@@ -15,7 +15,6 @@ import com.noeliaiglesias.mystudyplan.placeholder.Repaso;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * A fragment representing a list of Items.

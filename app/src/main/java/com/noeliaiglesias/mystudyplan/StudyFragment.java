@@ -64,7 +64,7 @@ public class StudyFragment extends Fragment {
             }
         });
 
-        mTemaField = (EditText) v.findViewById(R.id.tema);
+        mTemaField = v.findViewById(R.id.tema);
         mTemaField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -144,7 +144,7 @@ public class StudyFragment extends Fragment {
         @Override
         public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
             View view = inflater.inflate(R.layout.recycler, container, false);
-            mStudyRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerViewList);
+            mStudyRecyclerView = view.findViewById(R.id.recyclerViewList);
             RecyclerView.LayoutManager manager= new LinearLayoutManager(getActivity());
             mStudyRecyclerView.setLayoutManager(manager);
             updateUI(mStudyRecyclerView);

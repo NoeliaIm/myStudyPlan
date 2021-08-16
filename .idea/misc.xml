@@ -3,14 +3,20 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Noe/AndroidStudioProjects/MyStudyPlan/app/src/main/res/layout/activity_main.xml" value="0.15555555555555556" />
         <entry key="..\:/Users/Noe/AndroidStudioProjects/MyStudyPlan/app/src/main/res/layout/dialogo_editar_tema.xml" value="0.34601449275362317" />
         <entry key="..\:/Users/Noe/AndroidStudioProjects/MyStudyPlan/app/src/main/res/layout/dialogo_eliminar_asignatura.xml" value="0.3365036231884058" />
         <entry key="..\:/Users/Noe/AndroidStudioProjects/MyStudyPlan/app/src/main/res/layout/dialogo_eliminar_tema.xml" value="0.15416666666666667" />
         <entry key="..\:/Users/Noe/AndroidStudioProjects/MyStudyPlan/app/src/main/res/layout/dialogo_fecha_examen.xml" value="0.17325227963525835" />
         <entry key="..\:/Users/Noe/AndroidStudioProjects/MyStudyPlan/app/src/main/res/layout/fragment_calendario.xml" value="0.17325227963525835" />
         <entry key="..\:/Users/Noe/AndroidStudioProjects/MyStudyPlan/app/src/main/res/layout/fragment_config.xml" value="0.17325227963525835" />
+        <entry key="..\:/Users/Noe/AndroidStudioProjects/MyStudyPlan/app/src/main/res/layout/fragment_repaso.xml" value="0.15555555555555556" />
+        <entry key="..\:/Users/Noe/AndroidStudioProjects/MyStudyPlan/app/src/main/res/layout/fragment_repaso_list.xml" value="0.1" />
         <entry key="..\:/Users/Noe/AndroidStudioProjects/MyStudyPlan/app/src/main/res/layout/fragment_study.xml" value="0.1274062816616008" />
+        <entry key="..\:/Users/Noe/AndroidStudioProjects/MyStudyPlan/app/src/main/res/layout/recycler.xml" value="0.16018518518518518" />
         <entry key="..\:/Users/Noe/AndroidStudioProjects/MyStudyPlan/app/src/main/res/layout/study_list.xml" value="0.17325227963525835" />
+        <entry key="..\:/Users/Noe/AndroidStudioProjects/MyStudyPlan/app/src/main/res/menu/navigation.xml" value="0.15555555555555556" />
+        <entry key="..\:/Users/Noe/AndroidStudioProjects/MyStudyPlan/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.3723958333333333" />
       </map>
     </option>
   </component>

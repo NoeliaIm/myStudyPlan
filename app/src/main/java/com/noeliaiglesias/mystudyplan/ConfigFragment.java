@@ -73,7 +73,7 @@ public class ConfigFragment extends Fragment {
 
     public  void onViewCreated(@NonNull View v , Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
-        EditText mAsignaturaField = (EditText) v.findViewById(R.id.asignatura);
+        EditText mAsignaturaField = v.findViewById(R.id.asignatura);
         mAsignaturaField.setOnClickListener(this::mostrarDialogo);
         TextView editarTema = v.findViewById(R.id.editarTema);
         editarTema.setOnClickListener(v1 -> {
