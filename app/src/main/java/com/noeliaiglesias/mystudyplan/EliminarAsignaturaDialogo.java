@@ -2,7 +2,6 @@ package com.noeliaiglesias.mystudyplan;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -53,18 +52,15 @@ public class EliminarAsignaturaDialogo extends DialogFragment {
 
             }
         });
-        builder.setPositiveButton(R.string.eliminar, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                SharedPreferences preferences = Objects.requireNonNull(requireContext()).getSharedPreferences("MisAsignaturas", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = preferences.edit();
-                String asignatura = preferences.getString(keyItem, "");
-                if(asignatura!= null && !asignatura.isEmpty()){
-                    editor.remove(keyItem);
-                    editor.apply();
-                    studyPlanlab.deleteStudiesByAsignatura(asignatura);
-                }
-            }
+        builder.setPositiveButton(R.string.eliminar, (dialog, which) -> {
+            SharedPreferences preferences = Objects.requireNonNull(requireContext()).getSharedPreferences("MisAsignaturas", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            String asignatura = preferences.getString(keyItem, "");
+           if(asignatura!= null && !asignatura.isEmpty()){
+                editor.remove(keyItem);
+                editor.apply();
+                studyPlanlab.deleteStudiesByAsignatura(asignatura);
+           }
         });
         builder.setNegativeButton(R.string.cancel, (dialog, which) -> {
 

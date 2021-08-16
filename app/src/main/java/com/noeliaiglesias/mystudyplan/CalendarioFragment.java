@@ -2,7 +2,6 @@ package com.noeliaiglesias.mystudyplan;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
@@ -20,7 +19,6 @@ import androidx.fragment.app.Fragment;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.

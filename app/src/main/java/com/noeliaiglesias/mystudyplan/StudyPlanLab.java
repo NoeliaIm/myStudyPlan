@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class StudyPlanLab {
     private static StudyPlanLab sStudyPlanLab; //se utiliza la convención Android s para indicar que es una variable estática

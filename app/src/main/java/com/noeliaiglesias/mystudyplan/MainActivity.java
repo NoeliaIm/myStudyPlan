@@ -6,23 +6,31 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 
 public class MainActivity extends FragmentActivity {
     public BottomNavigationView navigationView;
     FragmentManager fm = getSupportFragmentManager();
+    private static final int NUM_PAGES=4;
+    private ViewPager2 viewPager2;
+    private FragmentStateAdapter pagerAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,27 +38,55 @@ public class MainActivity extends FragmentActivity {
         setContentView(R.layout.activity_main);
 
 
-        Fragment fragment = fm.findFragmentById(R.id.fragment_container);
-        if( fragment == null){
-            fragment = new StudyFragment();
-            fm.beginTransaction().add(R.id.fragment_container, fragment).commit();
-        }
 
+       viewPager2 = findViewById(R.id.myViewPager);
+        viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                navigationView.getMenu().getItem(position).setChecked(true);
 
+                boolean remover=false;
+                if(position >=2){
+                    remover=true;
+                }
+               if(Boolean.TRUE.equals(remover)){
+                  hideFragment();
+               }else {
+                   showFragment();
+               }
+            }
+        });
+       pagerAdapter = new ScreenSlidePagerAdapter(this);
+       viewPager2.setAdapter(pagerAdapter);
        navigationView =  findViewById(R.id.bottom_navigation);
         navigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
     }
 
 
+    @Override
+    public void onBackPressed() {
+        if (viewPager2.getCurrentItem() == 0) {
+            // If the user is currently looking at the first step, allow the system to handle the
+            // Back button. This calls finish() on this activity and pops the back stack.
+            super.onBackPressed();
+        } else {
+            // Otherwise, select the previous step.
+            viewPager2.setCurrentItem(viewPager2.getCurrentItem() - 1);
+        }
+    }
 
 
     public void aniadirAsignatura(View v){
+        EditText editText = findViewById(R.id.asignatura);
+        if(editText.getText().toString().isEmpty()){
+            return;
+        }
         SharedPreferences prefs =
                 getSharedPreferences("MisAsignaturas", Context.MODE_PRIVATE);
         int numAsignatura = prefs.getInt("numAsig", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = prefs.edit();
-        EditText editText = findViewById(R.id.asignatura);
         Map<String,?> keys = prefs.getAll();
         ArrayList<String> items=new ArrayList<>();
         for(Map.Entry<String,?> entry : keys.entrySet()){
@@ -69,11 +105,10 @@ public class MainActivity extends FragmentActivity {
         editText.setText("");
 
     }
-    private void showFragment(Fragment frg) {
-        if( frg == null){
-            frg = new StudyFragment();
-            fm.beginTransaction().add(R.id.fragment_container, frg).commit();
-        }
+    private void showFragment() {
+        Objects.requireNonNull(fm.findFragmentById(R.id.fragment_container)).requireView().requestLayout();
+        Objects.requireNonNull(fm.findFragmentById(R.id.fragment_container)).requireView().getLayoutParams().height=LinearLayout.LayoutParams.WRAP_CONTENT;
+       Objects.requireNonNull(fm.findFragmentById(R.id.fragment_container)).requireView().setVisibility(View.VISIBLE);
     }
 
 
@@ -88,13 +123,10 @@ public class MainActivity extends FragmentActivity {
         return fragmentsVisible;
     }
 
-    private void hideFragment(Fragment frg){
-        if(frg != null) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .remove(frg)
-                    .commit();
-        }
+    private void hideFragment(){
+        Objects.requireNonNull(fm.findFragmentById(R.id.fragment_container)).requireView().requestLayout();
+        Objects.requireNonNull(fm.findFragmentById(R.id.fragment_container)).requireView().getLayoutParams().height=0;
+        Objects.requireNonNull(fm.findFragmentById(R.id.fragment_container)).requireView().setVisibility(View.INVISIBLE);
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -103,39 +135,64 @@ public class MainActivity extends FragmentActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             Fragment f = null;
-            Fragment fragment = fm.findFragmentById(R.id.fragment_container);
 
             switch (item.getItemId()) {
                 case R.id.navigation_temas:
-                    showFragment(fragment);
+                    showFragment();
                     f = new StudyFragment.StudyList();
                     break;
 
                 case R.id.navigation_repasos:
-                    showFragment(fragment);
+                    showFragment();
                     f = new RepasoFragment();
                     break;
                 case R.id.navigation_examenes:
-                    hideFragment(fragment);
+                    hideFragment();
                     f = new CalendarioFragment();
+
                     break;
                 case R.id.navigation_config:
-                    hideFragment(fragment);
+                    hideFragment();
                     f= new ConfigFragment();
                     break;
             }
 
-            if(f!=null) {
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.fragment_container_recycler,f)
-                        .setPrimaryNavigationFragment(f)
-                        .commit();
-                return true;
-            }
-
-            return false;
+            viewPager2.setCurrentItem(item.getOrder());
+            return true;
         }
 
     };
+
+    private class ScreenSlidePagerAdapter extends FragmentStateAdapter {
+        public ScreenSlidePagerAdapter(FragmentActivity fa) {
+            super(fa);
+        }
+
+        @NonNull
+        @Override
+        public Fragment createFragment(int position) {
+
+            switch (position){
+                case 0:
+                    return new StudyFragment.StudyList();
+
+                case 1:
+                    return new RepasoFragment();
+
+                case 2:
+                    return new CalendarioFragment();
+
+                case 3:
+                    return new ConfigFragment();
+
+            }
+          return new Fragment();
+        }
+
+        @Override
+        public int getItemCount() {
+            return NUM_PAGES;
+        }
+    }
+
 }

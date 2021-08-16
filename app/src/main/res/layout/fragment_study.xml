@@ -10,7 +10,6 @@
     android:gravity="center|top"
     android:orientation="vertical">
 
-
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
         android:layout_width="match_parent"
@@ -25,11 +24,12 @@
             android:id="@+id/asignaturaSpinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:spinnerMode="dropdown"
             android:importantForAutofill="no"
             android:inputType="text"
+            android:minWidth="190dp"
             android:minHeight="48dp"
-            android:minWidth="190dp"/>
+            android:spinnerMode="dropdown"
+            card_view:ignore="SpeakableTextPresentCheck" />
 
 
         <EditText
@@ -58,5 +58,4 @@
                 android:textSize="20sp" />
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
-
 </LinearLayout>
