@@ -18,9 +18,14 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import com.noeliaiglesias.mystudyplan.databinding.StudyListBinding;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -35,6 +40,8 @@ public class StudyFragment extends Fragment {
     private EditText mTemaField;
     private StudyPlanLab studyPlanlab;
     private TextView planning;
+    private ArrayAdapter<String> adaptador;
+    private Spinner spinner;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,8 +55,8 @@ public class StudyFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_study, container, false);
-        Spinner spinner = v.findViewById(R.id.asignaturaSpinner);
-        ArrayAdapter<String> adaptador = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, asignaturas());
+        spinner = v.findViewById(R.id.asignaturaSpinner);
+        adaptador= new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, asignaturas());
         adaptador.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         spinner.setAdapter(adaptador);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -85,10 +92,21 @@ public class StudyFragment extends Fragment {
        planning.setOnClickListener(v1 -> {
            if(!mTemaField.getEditableText().toString().isEmpty()) {
                addStudy(v1);
+               ((MainActivity)getActivity()).refrescarContenido();
            }
 
        });
         return v;
+    }
+    public ArrayAdapter<String> getAdaptador() {
+        return adaptador;
+    }
+
+    public void setAdaptador() {
+        this.adaptador = getAdaptador();
+        adaptador= new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, asignaturas());
+        adaptador.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+        spinner.setAdapter(adaptador);
     }
 
 
@@ -134,10 +152,16 @@ public class StudyFragment extends Fragment {
     public static class StudyList extends Fragment {
         private RecyclerView mStudyRecyclerView;
         private ListAdapter listAdapter;
+        private SwipeRefreshLayout swipeRefreshStudyList;
+
 
         @Override
         public void onCreate(@Nullable Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
+
+        }
+        public  void refrescarContenido(){
+           updateUI(mStudyRecyclerView);
         }
 
         @Nullable
@@ -148,6 +172,11 @@ public class StudyFragment extends Fragment {
             RecyclerView.LayoutManager manager= new LinearLayoutManager(getActivity());
             mStudyRecyclerView.setLayoutManager(manager);
             updateUI(mStudyRecyclerView);
+            swipeRefreshStudyList= view.findViewById(R.id.swipeRefreshStudyList);
+            swipeRefreshStudyList.setOnRefreshListener(() -> {
+                updateUI(mStudyRecyclerView);
+                ((MainActivity)getActivity()).refrescarContenido();
+            });
             return  view;
         }
 
@@ -157,6 +186,9 @@ public class StudyFragment extends Fragment {
 
             listAdapter = new ListAdapter(mStudies);
             mStudyRecyclerView.setAdapter(listAdapter);
+            if(swipeRefreshStudyList!= null){
+                swipeRefreshStudyList.setRefreshing(false);
+            }
         }
 
         private class ListAdapter extends RecyclerView.Adapter<ListStudyHolder>{
@@ -165,6 +197,7 @@ public class StudyFragment extends Fragment {
             public ListAdapter(List<Study> mStudies) {
                 this.mStudies = mStudies;
             }
+
 
             @NonNull
             @Override
@@ -188,6 +221,9 @@ public class StudyFragment extends Fragment {
                     holder.fechaExamenIcon.setVisibility(View.INVISIBLE);
                     holder.fechaExamenText.setVisibility(View.INVISIBLE);
                 }
+                if(holder.fechaExamenIcon.getVisibility()== View.VISIBLE){
+                    holder.tvItemTema.setMaxWidth(340);
+                }
             }
 
             @Override
@@ -195,6 +231,8 @@ public class StudyFragment extends Fragment {
                 return mStudies.size();
             }
         }
+
+
     }
 }
 

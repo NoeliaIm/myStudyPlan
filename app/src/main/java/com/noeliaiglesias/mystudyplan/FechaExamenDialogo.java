@@ -72,6 +72,7 @@ public class FechaExamenDialogo extends DialogFragment {
                 study.setProxExam(LocalDate.parse(mArgs.getString("selecction_date"), DateTimeFormatter.ofPattern("dd-MM-yyyy")));
                 studyPlanlab.updateStudy(study);
                 studyPlanlab.updateRepasos(study);
+                ((MainActivity)getActivity()).refrescarContenido();
             }
         });
         builder.setNegativeButton(R.string.cancel, (dialog, which) -> {

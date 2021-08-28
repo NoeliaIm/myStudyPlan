@@ -6,13 +6,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.noeliaiglesias.mystudyplan.placeholder.Repaso;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -23,6 +27,8 @@ public class RepasoFragment extends Fragment {
 
     private StudyPlanLab studyPlanlab;
     private Repaso repaso;
+    private RecyclerView recyclerView;
+
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
@@ -67,7 +73,7 @@ public class RepasoFragment extends Fragment {
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
+            recyclerView = (RecyclerView) view;
             if (mColumnCount <= 1) {
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
             } else {
@@ -87,4 +93,21 @@ public class RepasoFragment extends Fragment {
 
 
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+
+    }
+
+    public void refrescarContenido() {
+        List<Repaso> repasos = studyPlanlab.getAllFirstRepasos();
+        repasos.sort(new Comparator<Repaso>() {
+            @Override
+            public int compare(Repaso o1, Repaso o2) {
+                return o1.getFechaSiguienteRepaso().compareTo(o2.getFechaSiguienteRepaso());
+            }
+        });
+        recyclerView.setAdapter(new MyRepasoRecyclerViewAdapter(repasos));
+    }
 }
