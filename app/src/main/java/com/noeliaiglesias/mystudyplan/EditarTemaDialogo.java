@@ -72,6 +72,7 @@ public class EditarTemaDialogo extends DialogFragment {
                 Study study = studyPlanlab.getStudyByAsignaturaAndTema(asignaturaElegida, temaElegido);
                 study.setTema(nuevoTema);
                 studyPlanlab.updateStudy(study);
+                ((MainActivity)getActivity()).refrescarContenido();
             }
 
         });

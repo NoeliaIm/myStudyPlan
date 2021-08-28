@@ -40,6 +40,8 @@ public class StudyFragment extends Fragment {
     private EditText mTemaField;
     private StudyPlanLab studyPlanlab;
     private TextView planning;
+    private ArrayAdapter<String> adaptador;
+    private Spinner spinner;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,8 +55,8 @@ public class StudyFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_study, container, false);
-        Spinner spinner = v.findViewById(R.id.asignaturaSpinner);
-        ArrayAdapter<String> adaptador = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, asignaturas());
+        spinner = v.findViewById(R.id.asignaturaSpinner);
+        adaptador= new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, asignaturas());
         adaptador.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         spinner.setAdapter(adaptador);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -95,6 +97,16 @@ public class StudyFragment extends Fragment {
 
        });
         return v;
+    }
+    public ArrayAdapter<String> getAdaptador() {
+        return adaptador;
+    }
+
+    public void setAdaptador() {
+        this.adaptador = getAdaptador();
+        adaptador= new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, asignaturas());
+        adaptador.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+        spinner.setAdapter(adaptador);
     }
 
 

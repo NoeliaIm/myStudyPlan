@@ -60,6 +60,7 @@ public class EliminarAsignaturaDialogo extends DialogFragment {
                 editor.remove(keyItem);
                 editor.apply();
                 studyPlanlab.deleteStudiesByAsignatura(asignatura);
+               ((MainActivity)getActivity()).refrescarContenido();
            }
         });
         builder.setNegativeButton(R.string.cancel, (dialog, which) -> {

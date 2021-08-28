@@ -73,6 +73,7 @@ public class EliminarTemaDialogo extends DialogFragment {
                 if(asignaturaElegida != null && temaElegido != null && !asignaturaElegida.isEmpty() && !temaElegido.isEmpty()){
                     Study study =studyPlanlab.getStudyByAsignaturaAndTema(asignaturaElegida, temaElegido);
                     studyPlanlab.deleteStudy(study);
+                    ((MainActivity)getActivity()).refrescarContenido();
                 }
 
             }

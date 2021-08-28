@@ -1,22 +1,19 @@
 package com.noeliaiglesias.mystudyplan;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import androidx.annotation.FloatRange;
-import androidx.annotation.FontRes;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -34,8 +31,6 @@ public class MainActivity extends FragmentActivity {
     private static final int NUM_PAGES=4;
     private ViewPager2 viewPager2;
     private FragmentStateAdapter pagerAdapter;
-    private int idStudy;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +96,7 @@ public class MainActivity extends FragmentActivity {
            numAsignatura++;
            editor.putInt("numAsig", numAsignatura);
            editor.apply();
+           refrescarContenido();
        }else{
            Toast.makeText(this, "La asignatura ya está añadida", Toast.LENGTH_LONG).show();
        }
@@ -176,6 +172,10 @@ public class MainActivity extends FragmentActivity {
             if(fragment instanceof RepasoFragment ){
                 RepasoFragment  fragmentStudy= (RepasoFragment) fragment;
                 fragmentStudy.refrescarContenido();
+            }
+            if(fragment instanceof  StudyFragment){
+                StudyFragment fragmentStudy= (StudyFragment) fragment;
+                fragmentStudy.setAdaptador();
             }
         }
     }
