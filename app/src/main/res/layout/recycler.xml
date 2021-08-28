@@ -2,9 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:card_view="http://schemas.android.com/tools"
+    android:id="@+id/studyList"
+    android:name="com.noeliaiglesias.mystudyplan.StudyFragment$StudyList"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
+
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardViewList"
@@ -16,15 +19,20 @@
         card_view:cardCornerRadius="8dp"
         card_view:cardElevation="8dp">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewList"
-            android:nextFocusLeft="@+id/recyclerViewList"
-            android:nextFocusUp="@+id/recyclerViewList"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefreshStudyList"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="6dp" />
+            android:layout_height="wrap_content">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nextFocusLeft="@+id/recyclerViewList"
+                android:nextFocusUp="@+id/recyclerViewList"
+                android:padding="6dp" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     </androidx.cardview.widget.CardView>
-
 
 </LinearLayout>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+<androidx.recyclerview.widget.RecyclerView xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/list"
     android:name="com.noeliaiglesias.mystudyplan.RepasoFragment"
@@ -13,3 +14,4 @@
     android:nextFocusLeft="@layout/fragment_repaso"
     android:nextFocusUp="@layout/fragment_repaso"
     tools:listitem="@layout/fragment_repaso" />
+

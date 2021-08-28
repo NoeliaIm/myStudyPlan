@@ -1,5 +1,6 @@
 package com.noeliaiglesias.mystudyplan;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -9,10 +10,13 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.annotation.FloatRange;
+import androidx.annotation.FontRes;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -30,6 +34,7 @@ public class MainActivity extends FragmentActivity {
     private static final int NUM_PAGES=4;
     private ViewPager2 viewPager2;
     private FragmentStateAdapter pagerAdapter;
+    private int idStudy;
 
 
     @Override
@@ -37,9 +42,7 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-
-       viewPager2 = findViewById(R.id.myViewPager);
+        viewPager2 = findViewById(R.id.myViewPager);
         viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
@@ -50,6 +53,7 @@ public class MainActivity extends FragmentActivity {
                 if(position >=2){
                     remover=true;
                 }
+
                if(Boolean.TRUE.equals(remover)){
                   hideFragment();
                }else {
@@ -61,7 +65,6 @@ public class MainActivity extends FragmentActivity {
        viewPager2.setAdapter(pagerAdapter);
        navigationView =  findViewById(R.id.bottom_navigation);
         navigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
     }
 
 
@@ -76,7 +79,6 @@ public class MainActivity extends FragmentActivity {
             viewPager2.setCurrentItem(viewPager2.getCurrentItem() - 1);
         }
     }
-
 
     public void aniadirAsignatura(View v){
         EditText editText = findViewById(R.id.asignatura);
@@ -153,7 +155,7 @@ public class MainActivity extends FragmentActivity {
                     break;
                 case R.id.navigation_config:
                     hideFragment();
-                    f= new ConfigFragment();
+                    f=  new ConfigFragment();
                     break;
             }
 
@@ -162,6 +164,21 @@ public class MainActivity extends FragmentActivity {
         }
 
     };
+
+    public void refrescarContenido() {
+        List<Fragment> fragments = fm.getFragments();
+        for (Fragment fragment: fragments
+             ) {
+            if(fragment instanceof StudyFragment.StudyList ){
+                StudyFragment.StudyList  fragmentStudy= (StudyFragment.StudyList)fragment;
+                fragmentStudy.refrescarContenido();
+            }
+            if(fragment instanceof RepasoFragment ){
+                RepasoFragment  fragmentStudy= (RepasoFragment) fragment;
+                fragmentStudy.refrescarContenido();
+            }
+        }
+    }
 
     private class ScreenSlidePagerAdapter extends FragmentStateAdapter {
         public ScreenSlidePagerAdapter(FragmentActivity fa) {
@@ -183,7 +200,7 @@ public class MainActivity extends FragmentActivity {
                     return new CalendarioFragment();
 
                 case 3:
-                    return new ConfigFragment();
+                    return  new ConfigFragment();
 
             }
           return new Fragment();
@@ -194,5 +211,6 @@ public class MainActivity extends FragmentActivity {
             return NUM_PAGES;
         }
     }
+
 
 }

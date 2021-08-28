@@ -23,6 +23,7 @@
             android:id="@+id/tvItemTema"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingEnd="20dp"
             android:textSize="13sp"
             android:text="@string/tema"/>
         <TextView
@@ -35,9 +36,10 @@
 
     <ImageView
         android:id="@+id/fechaExamenIcon"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical|end"
+        android:paddingStart="20dp"
+        android:layout_gravity="center_vertical|center_horizontal"
         android:contentDescription="@string/icono_que_indica_que_existe_fecha_de_examen"
         app:srcCompat="@drawable/ic_baseline_calendar_today_24" />
 
