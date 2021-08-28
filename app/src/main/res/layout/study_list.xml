@@ -4,6 +4,8 @@
     android:id="@+id/listStudy"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="6dp"
+    android:elevation="2dp"
     android:padding="6dp">
     <LinearLayout
         android:id="@+id/llStudyContainer"
@@ -18,20 +20,19 @@
             android:layout_height="wrap_content"
             android:text="@string/asignatura"
             android:textStyle="bold"
-            android:textSize="15sp" />
+            android:textSize="17sp" />
         <TextView
             android:id="@+id/tvItemTema"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingEnd="20dp"
-            android:textSize="13sp"
+            android:textSize="15sp"
             android:text="@string/tema"/>
         <TextView
             android:id="@+id/tvItemFechaInicio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="12sp"
-            android:text="@string/fecha_repaso"/>
+            android:textSize="13sp"
+            android:text="@string/fecha_inicio"/>
     </LinearLayout>
 
     <ImageView

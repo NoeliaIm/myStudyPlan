@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="6dp"
+    android:elevation="2dp"
+    android:padding="16dp">
+<LinearLayout
     android:id="@+id/repasoList"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginStart="10dp"
+    android:padding="10dp"
     android:orientation="vertical">
 
     <TextView
@@ -11,7 +17,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?attr/textAppearanceListItem"
-        android:textSize="15sp"
+        android:textSize="17sp"
         android:textStyle="bold" />
 
     <TextView
@@ -19,13 +25,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?attr/textAppearanceListItem"
-        android:textSize="13sp" />
+        android:textSize="15sp" />
 
     <TextView
         android:id="@+id/item_repaso_fecha_sig"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/text_margin"
         android:textAppearance="?attr/textAppearanceListItem"
-        android:textSize="13sp" />
+        android:textSize="15sp" />
 </LinearLayout>
+</androidx.cardview.widget.CardView>
