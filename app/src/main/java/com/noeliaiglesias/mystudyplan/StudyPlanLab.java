@@ -229,10 +229,10 @@ public class StudyPlanLab {
         for (Map.Entry <String,LocalDate> repaso:
              sorted.entrySet()) {
 
-            if(repaso.getKey().equals("r3")){
+            if(repaso.getKey().equals("r2")){
                 fechaAnterior= repaso.getValue();
             }
-            if(!repaso.getKey().equals("r1") && !repaso.getKey().equals("r2") && !repaso.getKey().equals("r3")){
+            if(!repaso.getKey().equals("r1") && !repaso.getKey().equals("r2")){
                 fechaRepaso= sigFecha(fechaAnterior);
                 fechaAnterior= fechaRepaso;
                 if(fechaRepaso.isAfter(s.getFechaFin()) || fechaRepaso.isEqual(s.getFechaFin())){
