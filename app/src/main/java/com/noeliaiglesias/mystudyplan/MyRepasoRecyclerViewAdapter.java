@@ -46,8 +46,9 @@ public class MyRepasoRecyclerViewAdapter extends RecyclerView.Adapter<MyRepasoRe
         if(mValues.get(position).getFechaSiguienteRepaso()!= null){
             holder.mFechaView.setText(mValues.get(position).getFechaSiguienteRepaso().format(DateTimeFormatter.ofPattern("EEE, dd-MM-yyyy")));
             if(mValues.get(position).getFechaSiguienteRepaso().equals(LocalDate.now())){
-               holder.mFechaView.setBackgroundColor(R.color.material_on_primary_emphasis_medium);
-               holder.mFechaView.setTextSize(15);
+                holder.mFechaView.setBackgroundResource(R.color.morado);
+            }else{
+                holder.mFechaView.setBackgroundResource(R.color.white);
             }
         }
     }
