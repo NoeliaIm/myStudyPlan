@@ -223,6 +223,8 @@ public class StudyFragment extends Fragment {
                 }
                 if(holder.fechaExamenIcon.getVisibility()== View.VISIBLE){
                     holder.tvItemTema.setMaxWidth(340);
+                }else{
+                    holder.tvItemTema.setMaxWidth(640);
                 }
             }
 

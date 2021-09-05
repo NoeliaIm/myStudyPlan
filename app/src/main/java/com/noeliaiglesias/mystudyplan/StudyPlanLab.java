@@ -13,6 +13,7 @@ import com.noeliaiglesias.mystudyplan.placeholder.Repaso;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -98,6 +99,12 @@ public class StudyPlanLab {
                 }
                 cursorWrapper.moveToNext();
             }
+            studies.sort(new Comparator<Study>() {
+                @Override
+                public int compare(Study o1, Study o2) {
+                    return o1.getFechaInicio().compareTo(o2.getFechaInicio());
+                }
+            });
         } finally {
             cursorWrapper.close();
         }
